@@ -1,0 +1,78 @@
+#http://english-zone.com/spelling/plurals.html
+#US -> I
+#SINGULAR	PLURAL
+alumnus	alumni
+cactus	cacti
+focus	foci
+fungus	fungi
+nucleus	nuclei
+radius	radii
+stimulus	stimuli
+#IS -> ES
+#SINGULAR	PLURAL
+axis	axes
+analysis	analyses
+basis	bases
+crisis	crises
+diagnosis	diagnoses
+ellipsis	ellipses
+hypothesis	hypotheses
+oasis	oases
+paralysis	paralyses
+parenthesis	parentheses
+synthesis	syntheses
+synopsis	synopses
+thesis	theses
+#IX -> ICES
+#SINGULAR	PLURAL
+appendix	appendices
+index	indeces
+matrix	matrices
+#EAU -> EAUX
+#SINGULAR	PLURAL
+beau	beaux
+bureau	bureaux
+tableau	tableaux
+#*** -> EN
+#SINGULAR	PLURAL
+child	children
+man	men
+ox	oxen
+woman	women
+#*** -> A
+#SINGULAR	PLURAL
+bacterium	bacteria
+corpus	corpora
+criterion	criteria
+curriculum	curricula
+datum	data
+genus	genera
+medium	media
+memorandum	memoranda
+phenomenon	phenomena
+stratum	strata
+#NO CHANGE
+#SINGULAR	PLURAL
+deer	deer
+fish	fish
+means	means
+offspring	offspring
+series	series
+sheep	sheep
+species	species
+#OO -> EE
+#SINGULAR	PLURAL
+foot	feet
+goose	geese
+tooth	teeth
+#A -> AE
+#SINGULAR	PLURAL
+antenna	antennae
+formula	formulae
+nebula	nebulae
+vertebra	vertebrae
+vita	vitae
+#OUSE -> ICE
+#SINGULAR	PLURAL
+louse	lice
+mouse	mice

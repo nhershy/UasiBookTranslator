@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import java.io.File;
+import java.util.*;
 
 public class Main {
 
-    final static String infile_path = "C:\\Users\\TEST\\Desktop\\input.txt";
-    final static String outfile_path = "C:\\Users\\TEST\\Desktop\\output.txt";
+    final static String infile_path = "C:\\Users\\Nicholas Hershy\\Desktop\\input.txt";
+    final static String outfile_path = "C:\\Users\\Nicholas Hershy\\Desktop\\output.txt";
     final static String tagger_path = "tagger/english-left3words-distsim.tagger";
 
     public static void main(String[] args) {
@@ -19,6 +20,10 @@ public class Main {
         List<TaggedWord> taggedWords;
 
         try {
+            //clear contents of outfile from previous run
+            PrintWriter pw = new PrintWriter(outfile);
+            pw.close();
+
             //read in entire text file to String
             String fileContents = fileContentsToString(infile);
 
@@ -31,9 +36,10 @@ public class Main {
             //create list of taggedWords from tagged fileContent String
             taggedWords = processTaggedWords(fileContentsTagged);
 
-            //clear contents of outfile from previous run
-            PrintWriter pw = new PrintWriter(outfile);
-            pw.close();
+            //CONVERSION ALREADY HAPPENED...
+            //convert irregular plural english noun
+            //to its normal singular form
+            taggedWords = pluralToSingularForm(taggedWords);
 
             //remove "will" and add "P" to the next word
             List<TaggedWord> taggedWordsWithFuture = accountForFutureTense(taggedWords);
@@ -51,6 +57,39 @@ public class Main {
             System.out.print("Error writing to file.");
         }
     }  //end main
+
+    private static HashMap<String, String> importIrregularPluralNouns() {
+        HashMap<String, String> nounMap = new HashMap();
+        try {
+            File file = new File("flat_files/irregularPluralNouns.txt");
+            Scanner input = new Scanner(file);
+            while (input.hasNextLine()) {
+                //list.add(input.nextLine());
+                String line = input.nextLine();
+                if (line.charAt(0) != '#') {
+                    String[] split = line.split("\\s+");
+                    nounMap.put(split[1], split[0]);
+                }
+            }
+            return nounMap;
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Cannot find file: irregularPluralNouns.txt");
+            return null;
+        }
+    }
+
+    public static List<TaggedWord> pluralToSingularForm(List<TaggedWord> taggedWords) {
+        HashMap<String, String> nounMap = importIrregularPluralNouns();
+        for (TaggedWord tw : taggedWords) {
+            for (Map.Entry<String, String> entry : nounMap.entrySet()) {
+                if (tw.getEng_word().equals(entry.getKey())) {
+                    tw.setEng_word(entry.getValue());
+                }
+            }
+        }
+        return taggedWords;
+    }
 
     public static List<TaggedWord> accountForFutureTense(List<TaggedWord> taggedWords) {
         List<TaggedWord> taggedWordsWithFuture = new ArrayList<>();

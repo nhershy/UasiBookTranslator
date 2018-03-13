@@ -189,6 +189,10 @@ public class TaggedWord {
         return eng_word;
     }
 
+    public void setEng_word(String eng_word) {
+        this.eng_word = eng_word;
+    }
+
     public boolean isPunctuation() {
         return isPunctuation;
     }
