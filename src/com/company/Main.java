@@ -36,10 +36,14 @@ public class Main {
             //create list of taggedWords from tagged fileContent String
             taggedWords = processTaggedWords(fileContentsTagged);
 
-            //CONVERSION ALREADY HAPPENED...
+            //TODO: THIS DOESN'T WORK YET
             //convert irregular plural english noun
             //to its normal singular form
-            taggedWords = pluralToSingularForm(taggedWords);
+            //pluralToSingularForm(taggedWords);
+
+            //prepare english words for uasi translation
+            //make necessary modifications
+            primeTheTranslator(taggedWords);
 
             //remove "will" and add "P" to the next word
             List<TaggedWord> taggedWordsWithFuture = accountForFutureTense(taggedWords);
@@ -58,13 +62,18 @@ public class Main {
         }
     }  //end main
 
+    public static void primeTheTranslator(List<TaggedWord> taggedWords) {
+        for (TaggedWord tw : taggedWords) {
+            PrimeTheTranslator.prime(tw);
+        }
+    }
+
     private static HashMap<String, String> importIrregularPluralNouns() {
         HashMap<String, String> nounMap = new HashMap();
         try {
             File file = new File("flat_files/irregularPluralNouns.txt");
             Scanner input = new Scanner(file);
             while (input.hasNextLine()) {
-                //list.add(input.nextLine());
                 String line = input.nextLine();
                 if (line.charAt(0) != '#') {
                     String[] split = line.split("\\s+");
@@ -79,22 +88,21 @@ public class Main {
         }
     }
 
-    public static List<TaggedWord> pluralToSingularForm(List<TaggedWord> taggedWords) {
+    public static void pluralToSingularForm(List<TaggedWord> taggedWords) {
         HashMap<String, String> nounMap = importIrregularPluralNouns();
         for (TaggedWord tw : taggedWords) {
             for (Map.Entry<String, String> entry : nounMap.entrySet()) {
-                if (tw.getEng_word().equals(entry.getKey())) {
-                    tw.setEng_word(entry.getValue());
+                if (tw.getEnglishWord().equals(entry.getKey())) {
+                    tw.setEnglishWord(entry.getValue());
                 }
             }
         }
-        return taggedWords;
     }
 
     public static List<TaggedWord> accountForFutureTense(List<TaggedWord> taggedWords) {
         List<TaggedWord> taggedWordsWithFuture = new ArrayList<>();
         for (int i = 0; i < taggedWords.size(); i++) {
-            if (taggedWords.get(i).getEng_word().equals("will")) {
+            if (taggedWords.get(i).getEnglishWord().equals("will")) {
                 taggedWords.get(i+1).makeFutureTense();
             }
             else {
@@ -120,7 +128,7 @@ public class Main {
         String uasiContent = "";
 
         for (TaggedWord tw : taggedWords) {
-            String englishWord = tw.getEng_word();
+            String englishWord = tw.getEnglishWord();
             String uasiWord = translate(englishWord);
             if (!tw.isPunctuation()) {
                 uasiContent += uasiWord + " ";
@@ -142,12 +150,14 @@ public class Main {
     }
 
     public static List<TaggedWord> processTaggedWords(String taggedContents) {
-        List<TaggedWord> wordList = new ArrayList<TaggedWord>();
-        String[] taggedWords = taggedContents.split("\\s+"); // splits by whitespace
-        for (String taggedWord : taggedWords) {
-            wordList.add(new TaggedWord(taggedWord));
+        TaggedWordFactory taggedWordFactory = new TaggedWordFactory();
+        List<TaggedWord> taggedList = new ArrayList<TaggedWord>();
+        String[] taggedWordsString = taggedContents.split("\\s+"); // splits by whitespace
+        for (String word : taggedWordsString) {
+            TaggedWord tw = taggedWordFactory.createTaggedWord(word);
+            taggedList.add(tw);
         }
-        return wordList;
+        return taggedList;
     }
 
     public static String translate(String englishWord) {
