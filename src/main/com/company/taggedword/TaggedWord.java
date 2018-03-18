@@ -1,4 +1,4 @@
-package com.company;
+package com.company.taggedword;
 
 public class TaggedWord {
     private String englishWord = "";
