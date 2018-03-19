@@ -1,9 +1,11 @@
-package com.company;
+package com.company.translator;
 
 //TODO: this file is experimental (i.e. trial and error)
 
+import com.company.taggedword.TaggedWord;
+
 public class PrimeTheTranslator {
-    private PrimeTheTranslator() {};
+    private PrimeTheTranslator() {}
 
     public static void prime(TaggedWord taggedWord) {
         if (taggedWord.isPunctuation())

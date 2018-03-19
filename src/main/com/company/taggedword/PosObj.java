@@ -1,4 +1,4 @@
-package com.company;
+package com.company.taggedword;
 
 //Part-of-Speech boolean object
 
@@ -15,7 +15,7 @@ public class PosObj {
     private boolean thirdPersonSingular = false;
     private boolean pastParticiple = false;
 
-    PosObj() { }
+    public PosObj() { }
 
     public boolean isPunctuation() {
         return isPunctuation;
