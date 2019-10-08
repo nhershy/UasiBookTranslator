@@ -1,4 +1,4 @@
-package com.company;
+package translator;
 
 //TODO: this file is experimental (i.e. trial and error)
 

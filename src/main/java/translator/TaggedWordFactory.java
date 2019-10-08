@@ -1,6 +1,4 @@
-package com.company;
-
-/*
+package translator;/*
 Penn Treebank System:
 
 NN	- Noun, singular or mass

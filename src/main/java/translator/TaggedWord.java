@@ -1,4 +1,4 @@
-package com.company;
+package translator;
 
 public class TaggedWord {
     private String englishWord = "";

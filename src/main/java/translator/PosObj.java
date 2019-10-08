@@ -1,4 +1,4 @@
-package com.company;
+package translator;
 
 //Part-of-Speech boolean object
 
