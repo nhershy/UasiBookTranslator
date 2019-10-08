@@ -1,4 +1,4 @@
-package com.company;
+package uasi.book.translator;
 
 public class TaggedWord {
     private String englishWord = "";

@@ -1,22 +1,37 @@
-package com.company;
+package uasi.book.translator;
+
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
+import org.apache.log4j.BasicConfigurator;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import java.io.File;
 import java.util.*;
 
 public class Main {
 
-    final static String infile_path = "C:\\Users\\Nicholas Hershy\\Desktop\\input.txt";
-    final static String outfile_path = "C:\\Users\\Nicholas Hershy\\Desktop\\output.txt";
-    final static String tagger_path = "tagger/english-left3words-distsim.tagger";
+    final static String INPUT_FILE_PATH = "src/main/resources/input.txt";
+    final static String OUTPUT_FILE_PATH = "src/main/resources/output.txt";
+    final static String TAGGER_PATH = "src/main/resources/english-left3words-distsim.tagger";
 
     public static void main(String[] args) {
 
-        File infile = new File(infile_path);
-        File outfile = new File(outfile_path);
-        MaxentTagger tagger = new MaxentTagger(tagger_path);
+        BasicConfigurator.configure();
+
+        File infile = new File(INPUT_FILE_PATH);
+        File outfile = new File(OUTPUT_FILE_PATH);
+        File taggerFile = new File(TAGGER_PATH);
+
+        MaxentTagger tagger = new MaxentTagger();
+
+        try {
+            InputStream targetStream = new FileInputStream(taggerFile);
+            tagger = new MaxentTagger(targetStream);
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+
         List<TaggedWord> taggedWords;
 
         try {
@@ -53,13 +68,12 @@ public class Main {
 
             //print uasi result
             printStringToOutfile(uasiContent, outfile);
-        }
-        catch (FileNotFoundException e1) {
+        } catch (FileNotFoundException e1) {
             System.out.println("File not found.");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.print("Error writing to file.");
         }
+
     }  //end main
 
     public static void primeTheTranslator(List<TaggedWord> taggedWords) {
@@ -81,8 +95,7 @@ public class Main {
                 }
             }
             return nounMap;
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("Cannot find file: irregularPluralNouns.txt");
             return null;
         }
@@ -103,16 +116,15 @@ public class Main {
         List<TaggedWord> taggedWordsWithFuture = new ArrayList<>();
         for (int i = 0; i < taggedWords.size(); i++) {
             if (taggedWords.get(i).getEnglishWord().equals("will")) {
-                taggedWords.get(i+1).makeFutureTense();
-            }
-            else {
+                taggedWords.get(i + 1).makeFutureTense();
+            } else {
                 taggedWordsWithFuture.add(taggedWords.get(i));
             }
         }
         return taggedWordsWithFuture;
     }
 
-    public static String fileContentsToString(File infile) throws FileNotFoundException, IOException{
+    public static String fileContentsToString(File infile) throws FileNotFoundException, IOException {
         InputStream in = new FileInputStream(infile);
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder out = new StringBuilder();
@@ -132,8 +144,7 @@ public class Main {
             String uasiWord = translate(englishWord);
             if (!tw.isPunctuation()) {
                 uasiContent += uasiWord + " ";
-            }
-            else {
+            } else {
                 //remove last space
                 uasiContent = uasiContent.substring(0, uasiContent.length() - 1);
                 uasiContent += uasiWord + " ";
@@ -174,7 +185,7 @@ public class Main {
 
     public static boolean isExceptionWord(String englishWord) {
         String iregWords[] = {"me", "she", "he", "we", "be", "do",
-                              "to", "a", "an", "the", "what", "and"};
+                "to", "a", "an", "the", "what", "and"};
         for (String s : iregWords) {
             if (s.equals(englishWord))
                 return true;
@@ -184,7 +195,7 @@ public class Main {
 
     public static String convertExceptionWord(String englishWord) {
         String w = "";
-        switch(englishWord){
+        switch (englishWord) {
             case "me":
                 w = "ma";
                 break;
@@ -236,7 +247,7 @@ public class Main {
     public static String shiftVowels(String word) {
         String newWord = "";
         char letter;
-        for(char c : word.toCharArray()) {
+        for (char c : word.toCharArray()) {
             switch (c) {
                 case 'a':
                     letter = 'e';
@@ -268,7 +279,7 @@ public class Main {
     public static String endsInW(String word) {
         int pos = word.length() - 1;
         if (word.charAt(pos) == 'w')
-            word = word.substring(0,pos)+'v';
+            word = word.substring(0, pos) + 'v';
         return word;
     }
 
