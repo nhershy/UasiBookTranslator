@@ -1,4 +1,4 @@
-package translator;
+package uasi.book.translator;
 
 //Part-of-Speech boolean object
 

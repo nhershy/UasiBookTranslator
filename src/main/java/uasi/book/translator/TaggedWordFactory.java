@@ -1,4 +1,4 @@
-package translator;/*
+package uasi.book.translator;/*
 Penn Treebank System:
 
 NN	- Noun, singular or mass

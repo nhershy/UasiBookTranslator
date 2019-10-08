@@ -1,4 +1,4 @@
-package translator;
+package uasi.book.translator;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import org.apache.log4j.BasicConfigurator;

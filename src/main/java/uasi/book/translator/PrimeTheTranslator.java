@@ -1,4 +1,4 @@
-package translator;
+package uasi.book.translator;
 
 //TODO: this file is experimental (i.e. trial and error)
 
